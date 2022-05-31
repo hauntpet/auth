@@ -1,0 +1,18 @@
+{
+    "name": "hauntpet/auth",
+    "description": "Add the ability to authenticate using HauntID.",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Lumite Studios",
+            "email": "haunt@lumitestudios.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "HauntPet\\Auth\\": "src/"
+        }
+    }
+}
