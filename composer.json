@@ -9,10 +9,14 @@
             "email": "haunt@lumitestudios.com"
         }
     ],
-    "require": {},
+    "require": {
+        "illuminate/support": "^9.14"
+    },
     "autoload": {
         "psr-4": {
             "HauntPet\\Auth\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
