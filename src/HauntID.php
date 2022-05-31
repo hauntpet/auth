@@ -22,22 +22,26 @@ class HauntID
      * Create an account.
      *
      * @param array $data
+     * @return \Illuminate\Http\Client\Response
      */
-    public function register(array $data = [])
+    public function register(array $data = []): \Illuminate\Http\Client\Response
     {
         $token = $this->getToken();
 
         return Http::withToken($token)->post("{$this->authUrl}/register", $data);
     }
 
-    public function login(string $email, string $password)
+    /**
+     * Login to an account.
+     *
+     * @param array $data
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function login(array $data): \Illuminate\Http\Client\Response
     {
         $token = $this->getToken();
 
-        return Http::withToken($token)->post("{$this->authUrl}/login", [
-            'email' => $email,
-            'password' => $password,
-        ]);
+        return Http::withToken($token)->post("{$this->authUrl}/login", $data);
     }
 
     /**
