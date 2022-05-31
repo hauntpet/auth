@@ -45,6 +45,18 @@ class HauntID
     }
 
     /**
+     * Create an account.
+     *
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function game(): \Illuminate\Http\Client\Response
+    {
+        $token = $this->getToken();
+
+        return Http::withToken($token)->get("{$this->authUrl}/game");
+    }
+
+    /**
      * Get the token.
      *
      * @return string|null
