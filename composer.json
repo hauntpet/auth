@@ -17,6 +17,16 @@
             "HauntPet\\Auth\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HauntPet\\Auth\\AuthServiceProvider"
+            ],
+            "aliases": {
+                "HauntID": "HauntPet\\Auth\\Facades\\HauntID"
+            }
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
