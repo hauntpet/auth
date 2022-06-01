@@ -13,10 +13,10 @@ class HauntID
     private string $authUrl = 'http://haunt.test/api';
 
     /**
-     * The token to use for requests.
-     * @var string|null
+     * The session key to use.
+     * @var string
      */
-    private ?string $token = null;
+    private string $tokenKey = 'tokentest';
 
     /**
      * Get a game's information.
@@ -27,7 +27,7 @@ class HauntID
     {
         $token = $this->getToken();
 
-        return Http::withToken($token)->get("{$this->authUrl}/game");
+        return Http::acceptJson()->withToken($token)->get("{$this->authUrl}/game");
     }
 
     /**
@@ -40,7 +40,7 @@ class HauntID
     {
         $token = $this->getToken();
 
-        return Http::withToken($token)->post("{$this->authUrl}/register", $data);
+        return Http::acceptJson()->withToken($token)->post("{$this->authUrl}/register", $data);
     }
 
     /**
@@ -53,7 +53,7 @@ class HauntID
     {
         $token = $this->getToken();
 
-        return Http::withToken($token)->post("{$this->authUrl}/login", $data);
+        return Http::acceptJson()->withToken($token)->post("{$this->authUrl}/login", $data);
     }
 
     /**
@@ -67,7 +67,7 @@ class HauntID
             $this->setToken();
         }
 
-        return $this->token;
+        return session($this->tokenKey);
     }
 
     /**
@@ -77,7 +77,7 @@ class HauntID
      */
     private function hasToken(): bool
     {
-        return $this->token !== null;
+        return session()->has($this->tokenKey);
     }
 
     /**
@@ -94,7 +94,7 @@ class HauntID
         ]);
 
         if ($response->ok()) {
-            $this->token = $response->body();
+            session([$this->tokenKey => $response->body()]);
         }
     }
 }
