@@ -8,7 +8,10 @@ Add the ability to authenticate using HauntID.
 composer require hauntpet/auth
 ```
 
-### Register
+### Setup
+Create an account with [haunt.pet](https://haunt.pet), then create a new **External Game** with your websites url.
+
+### Methods
 ```php
 use HauntPet\Auth\Facades\HauntID;
 
@@ -24,10 +27,11 @@ if($response->ok()) {
     User::create(array_merge($data, [
         'haunt_id' => $response->json()['id'],
     ]));
+
+    ...
 }
 ```
 
-### Login
 ```php
 use HauntPet\Auth\Facades\HauntID;
 
@@ -38,6 +42,12 @@ $data = [
 $response = HauntID::login($data);
 
 if($response->ok()) {
-    $user = User::where('haunt_id', '=', $response->json()['id'])->first();
+    $data = $response->json();
+    $attributes = array_merge(Arr::except($data, ['id', 'activation_token', 'created_at', 'updated_at']), [
+        'password' => Hash::make(request()->password),
+    ]);
+    $user = User::firstOrCreate(['haunt_id' => $data['id'], $attributes]);
+
+    ...
 }
 ```
