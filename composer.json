@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "illuminate/support": "^9.14"
+        "illuminate/support": "^9.14",
+        "illuminate/routing": "^9.15"
     },
     "autoload": {
         "psr-4": {
