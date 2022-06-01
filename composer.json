@@ -10,8 +10,10 @@
         }
     ],
     "require": {
-        "illuminate/support": "^9.14",
-        "illuminate/routing": "^9.15"
+        "php": "^8.0.2",
+        "illuminate/routing": "^9.15",
+        "illuminate/http": "^9.15",
+        "illuminate/support": "^9.14"
     },
     "autoload": {
         "psr-4": {
