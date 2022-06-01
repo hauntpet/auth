@@ -1,6 +1,6 @@
 <?php
 
-namespace HauntPet\Auth;
+namespace HauntPet\Auth\Services;
 
 use Illuminate\Support\Facades\Http;
 
@@ -17,6 +17,18 @@ class HauntID
      * @var string|null
      */
     private ?string $token = null;
+
+    /**
+     * Get a game's information.
+     *
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function game(): \Illuminate\Http\Client\Response
+    {
+        $token = $this->getToken();
+
+        return Http::withToken($token)->get("{$this->authUrl}/game");
+    }
 
     /**
      * Create an account.
@@ -42,18 +54,6 @@ class HauntID
         $token = $this->getToken();
 
         return Http::withToken($token)->post("{$this->authUrl}/login", $data);
-    }
-
-    /**
-     * Create an account.
-     *
-     * @return \Illuminate\Http\Client\Response
-     */
-    public function game(): \Illuminate\Http\Client\Response
-    {
-        $token = $this->getToken();
-
-        return Http::withToken($token)->get("{$this->authUrl}/game");
     }
 
     /**
