@@ -2,8 +2,10 @@
 
 namespace HauntPet\Auth;
 
-use HauntPet\Auth\HauntID;
+use Illuminate\Routing\Router;
+use HauntPet\Auth\Services\HauntID;
 use Illuminate\Support\ServiceProvider;
+use HauntPet\Auth\Middleware\IdentifyGame;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -19,5 +21,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->bind('haunt-id', function ($app) use ($hauntID) {
             return $hauntID;
         });
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot(Router $router)
+    {
+        $router->pushMiddlewareToGroup('web', IdentifyGame::class);
     }
 }
