@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use HauntPet\Auth\Services\GameManager;
 use HauntPet\Auth\Exceptions\GameNotFoundException;
 
-class IdentifyGame
+class ManageGame
 {
     /**
      * The game manager instance.
