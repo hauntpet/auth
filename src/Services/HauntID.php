@@ -10,13 +10,13 @@ class HauntID
      * The url to authenticate against.
      * @var string
      */
-    private string $authUrl = 'http://haunt.test/api';
+    private string $authUrl = 'https://haunt.pet/api';
 
     /**
      * The session key to use.
      * @var string
      */
-    private string $tokenKey = 'tokentest';
+    private string $tokenKey = 'gameToken';
 
     /**
      * Get a game's information.
