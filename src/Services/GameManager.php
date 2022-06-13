@@ -12,9 +12,13 @@ class GameManager
      */
     private string $gameKey = 'game';
 
-    public function getGame()
+    public function getGame(): ?array
     {
-        return session($this->gameKey);
+        if ($this->hasGame()) {
+            return session($this->gameKey);
+        }
+
+        return $this->setGame();
     }
 
     public function hasGame(): bool
@@ -22,12 +26,15 @@ class GameManager
         return session()->has($this->gameKey);
     }
 
-    public function setGame(): void
+    public function setGame(): ?array
     {
         $response = HauntID::game();
 
         if ($response->ok()) {
             session([$this->gameKey => $response->json()]);
+            return $response->json();
         }
+
+        return null;
     }
 }

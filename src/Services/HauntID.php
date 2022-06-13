@@ -10,13 +10,18 @@ class HauntID
      * The url to authenticate against.
      * @var string
      */
-    private string $authUrl = 'https://haunt.pet/api';
+    private string $authUrl = 'http://haunt.test/api';
 
     /**
      * The session key to use.
      * @var string
      */
     private string $tokenKey = 'gameToken';
+
+    public function check(string $token): \Illuminate\Http\Client\Response
+    {
+        return Http::acceptJson()->withToken($token)->get("{$this->authUrl}/token");
+    }
 
     /**
      * Get a game's information.
@@ -27,7 +32,9 @@ class HauntID
     {
         $token = $this->getToken();
 
-        return Http::acceptJson()->withToken($token)->get("{$this->authUrl}/game");
+        return Http::acceptJson()
+            ->withToken($this->getToken())
+            ->get("{$this->authUrl}/game");
     }
 
     /**
@@ -40,7 +47,9 @@ class HauntID
     {
         $token = $this->getToken();
 
-        return Http::acceptJson()->withToken($token)->post("{$this->authUrl}/register", $data);
+        return Http::acceptJson()
+            ->withToken($this->getToken())
+            ->post("{$this->authUrl}/register", $data);
     }
 
     /**
@@ -51,9 +60,9 @@ class HauntID
      */
     public function login(array $data): \Illuminate\Http\Client\Response
     {
-        $token = $this->getToken();
-
-        return Http::acceptJson()->withToken($token)->post("{$this->authUrl}/login", $data);
+        return Http::acceptJson()
+            ->withToken($this->getToken())
+            ->post("{$this->authUrl}/login", $data);
     }
 
     /**
@@ -63,38 +72,6 @@ class HauntID
      */
     private function getToken(): ?string
     {
-        if (!$this->hasToken()) {
-            $this->setToken();
-        }
-
-        return session($this->tokenKey);
-    }
-
-    /**
-     * Check if a token has already been set.
-     *
-     * @return bool
-     */
-    private function hasToken(): bool
-    {
-        return session()->has($this->tokenKey);
-    }
-
-    /**
-     * Set the token.
-     *
-     * @return void
-     */
-    private function setToken(): void
-    {
-        $host = request()->getHost();
-
-        $response = Http::get("{$this->authUrl}/token", [
-            'host' => $host,
-        ]);
-
-        if ($response->ok()) {
-            session([$this->tokenKey => $response->body()]);
-        }
+        return env('HAUNT_ACCESS_TOKEN') ?? null;
     }
 }
