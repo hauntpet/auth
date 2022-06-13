@@ -28,8 +28,8 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
-        $router->pushMiddlewareToGroup('web', ManageGame::class);
+        //
     }
 }
