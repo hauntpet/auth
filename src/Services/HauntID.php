@@ -2,10 +2,13 @@
 
 namespace HauntPet\Auth\Services;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 
 class HauntID
 {
+    const TOKEN_KEY = 'accessToken';
+
     /**
      * The url to authenticate against.
      * @var string
@@ -13,28 +16,44 @@ class HauntID
     private string $authUrl = 'http://haunt.test/api';
 
     /**
-     * The session key to use.
-     * @var string
+     * Check an access token.
+     * If it works, set the game in the game manager.
+     *
+     * @param string $token
+     * @return bool
      */
-    private string $tokenKey = 'gameToken';
-
-    public function check(string $token): \Illuminate\Http\Client\Response
+    public function check(string $token): bool
     {
-        return Http::acceptJson()->withToken($token)->get("{$this->authUrl}/token");
+        $response = Http::acceptJson()
+            ->withToken($token)
+            ->get("{$this->authUrl}/token");
+
+        if (!$response->ok()) {
+            return false;
+        }
+
+        $gameData = $response->json();
+
+        if (!Str::contains(request()->root(), $gameData['url'])) {
+            return false;
+        }
+
+        $this->setToken($token);
+        GameManager::setGame($gameData);
+        return true;
     }
 
     /**
-     * Get a game's information.
+     * Login to an account.
      *
+     * @param array $data
      * @return \Illuminate\Http\Client\Response
      */
-    public function game(): \Illuminate\Http\Client\Response
+    public function login(array $data): \Illuminate\Http\Client\Response
     {
-        $token = $this->getToken();
-
         return Http::acceptJson()
             ->withToken($this->getToken())
-            ->get("{$this->authUrl}/game");
+            ->post("{$this->authUrl}/login", $data);
     }
 
     /**
@@ -53,25 +72,23 @@ class HauntID
     }
 
     /**
-     * Login to an account.
-     *
-     * @param array $data
-     * @return \Illuminate\Http\Client\Response
-     */
-    public function login(array $data): \Illuminate\Http\Client\Response
-    {
-        return Http::acceptJson()
-            ->withToken($this->getToken())
-            ->post("{$this->authUrl}/login", $data);
-    }
-
-    /**
      * Get the token.
      *
      * @return string|null
      */
     private function getToken(): ?string
     {
-        return env('HAUNT_ACCESS_TOKEN') ?? null;
+        return session(HauntID::TOKEN_KEY) ?? env('HAUNT_ACCESS_TOKEN');
+    }
+
+    /**
+     * Set the token.
+     *
+     * @param string $token
+     * @return void
+     */
+    private function setToken(string $token): void
+    {
+        session([HauntID::TOKEN_KEY => $token]);
     }
 }
