@@ -6,35 +6,23 @@ use HauntPet\Auth\Facades\HauntID;
 
 class GameManager
 {
-    /**
-     * The session key to use.
-     * @var string
-     */
-    private string $gameKey = 'game';
+    const GAME_KEY = 'gameData';
 
-    public function getGame(): ?array
+    public static function getGame(): ?array
     {
-        if ($this->hasGame()) {
-            return session($this->gameKey);
-        }
-
-        return $this->setGame();
+        return session(GameManager::GAME_KEY);
     }
 
-    public function hasGame(): bool
+    public static function setGameConfig(): void
     {
-        return session()->has($this->gameKey);
+        $data = GameManager::getGame();
+        config(['database.connections.mysql.database' => $data['db_name']]);
+        config(['database.connections.mysql.username' => $data['db_username']]);
+        config(['database.connections.mysql.password' => $data['db_password']]);
     }
 
-    public function setGame(): ?array
+    public static function setGame($data): void
     {
-        $response = HauntID::game();
-
-        if ($response->ok()) {
-            session([$this->gameKey => $response->json()]);
-            return $response->json();
-        }
-
-        return null;
+        session([GameManager::GAME_KEY => $data]);
     }
 }
