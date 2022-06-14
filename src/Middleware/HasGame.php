@@ -25,6 +25,7 @@ class HasGame
         }
 
         GameManager::setGameConfig();
+        $this->success();
 
         return $next($request);
     }
@@ -37,5 +38,15 @@ class HasGame
     protected function fail()
     {
         throw new GameNotFoundException();
+    }
+
+    /**
+     * The request has succeeded.
+     *
+     * @return mixed
+     */
+    protected function success()
+    {
+        //
     }
 }
