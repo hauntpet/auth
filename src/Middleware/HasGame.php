@@ -7,25 +7,8 @@ use Illuminate\Http\Request;
 use HauntPet\Auth\Services\GameManager;
 use HauntPet\Auth\Exceptions\GameNotFoundException;
 
-class ManageGame
+class HasGame
 {
-    /**
-     * The game manager instance.
-     * @var \App\Services\GameManager
-     */
-    protected GameManager $gameManager;
-
-    /**
-     * Create a new middleware instance.
-     *
-     * @param \App\Services\GameManager $gameManager
-     * @return void
-     */
-    public function __construct(GameManager $gameManager)
-    {
-        $this->gameManager = $gameManager;
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -35,16 +18,24 @@ class ManageGame
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$this->gameManager->hasGame()) {
-            $this->gameManager->setGame();
-        }
-
-        $game = $this->gameManager->getGame();
+        $game = GameManager::getGame();
 
         if (!$game) {
-            throw new GameNotFoundException();
+            return $this->fail();
         }
 
+        GameManager::setGameConfig();
+
         return $next($request);
+    }
+
+    /**
+     * The request has failed.
+     *
+     * @throws \HauntPet\Auth\Exceptions\GameNotFoundException
+     */
+    protected function fail()
+    {
+        throw new GameNotFoundException();
     }
 }
