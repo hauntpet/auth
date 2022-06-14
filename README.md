@@ -9,7 +9,10 @@ composer require hauntpet/auth
 ```
 
 ### Setup
-Create an account with [haunt.pet](https://haunt.pet), then create a new **External Game** with your websites url.
+1. Create an account with [haunt.pet](https://haunt.pet).
+2. On the settings page add a new external game with your website's url.
+3. Select to edit the newly created game and generate an access token.
+4. Set the environment variable `HAUNT_ACCESS_TOKEN` as the access token.
 
 ### Methods
 ```php
