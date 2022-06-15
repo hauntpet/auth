@@ -24,16 +24,19 @@ class HauntID
      */
     public function check(string $token): bool
     {
+        // attempt to fetch the game
         $response = Http::acceptJson()
             ->withToken($token)
-            ->get("{$this->authUrl}/token");
+            ->get("{$this->authUrl}/game");
 
         if (!$response->ok()) {
             return false;
         }
 
+
         $gameData = $response->json();
 
+        // check the current website is for this game
         if (!Str::contains(request()->root(), $gameData['url'])) {
             return false;
         }
@@ -64,8 +67,6 @@ class HauntID
      */
     public function register(array $data = []): \Illuminate\Http\Client\Response
     {
-        $token = $this->getToken();
-
         return Http::acceptJson()
             ->withToken($this->getToken())
             ->post("{$this->authUrl}/register", $data);
@@ -78,7 +79,7 @@ class HauntID
      */
     private function getToken(): ?string
     {
-        return session(HauntID::TOKEN_KEY) ?? env('HAUNT_ACCESS_TOKEN');
+        return session(HauntID::TOKEN_KEY);
     }
 
     /**

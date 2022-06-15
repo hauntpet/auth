@@ -26,10 +26,13 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
+     * @param \Illuminate\Routing\Router $router
      * @return void
      */
-    public function boot()
+    public function boot(Router $router)
     {
-        //
+        $router->pushMiddlewareToGroup('web', \HauntPet\Auth\Middleware\ManageGame::class);
+        //$router->aliasMiddleware('game.manage', \HauntPet\Auth\Middleware\ManageGame::class);
+        $router->aliasMiddleware('game.has', \HauntPet\Auth\Middleware\HasGame::class);
     }
 }

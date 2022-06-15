@@ -13,12 +13,18 @@ class GameManager
         return session(GameManager::GAME_KEY);
     }
 
+    public static function hasGame(): bool
+    {
+        return session()->has(GameManager::GAME_KEY);
+    }
+
     public static function setGameConfig(): void
     {
         $data = GameManager::getGame();
-        config(['database.connections.mysql.database' => $data['db_name']]);
-        config(['database.connections.mysql.username' => $data['db_username']]);
-        config(['database.connections.mysql.password' => $data['db_password']]);
+        $defaultConnection = config('database.default');
+        config(["database.connections.${defaultConnection}.database" => $data['db_name']]);
+        config(["database.connections.${defaultConnection}.username" => $data['db_username']]);
+        config(["database.connections.${defaultConnection}.password" => $data['db_password']]);
     }
 
     public static function setGame($data): void
