@@ -34,5 +34,6 @@ class AuthServiceProvider extends ServiceProvider
         $router->pushMiddlewareToGroup('web', \HauntPet\Auth\Middleware\ManageGame::class);
         //$router->aliasMiddleware('game.manage', \HauntPet\Auth\Middleware\ManageGame::class);
         $router->aliasMiddleware('game.has', \HauntPet\Auth\Middleware\HasGame::class);
+        $router->aliasMiddleware('game.hasnot', \HauntPet\Auth\Middleware\HasNotGame::class);
     }
 }

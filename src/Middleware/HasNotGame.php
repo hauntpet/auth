@@ -4,11 +4,10 @@ namespace HauntPet\Auth\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use HauntPet\Auth\Facades\HauntID;
 use HauntPet\Auth\Services\GameManager;
 use HauntPet\Auth\Exceptions\GameNotFoundException;
 
-class ManageGame
+class HasNotGame
 {
     /**
      * Handle an incoming request.
@@ -19,14 +18,20 @@ class ManageGame
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!GameManager::hasGame()) {
-            HauntID::check(env('HAUNT_ACCESS_TOKEN') ?? '');
-        }
-
-        if ($game = GameManager::getGame()) {
-            GameManager::setGameConfig();
+        if (GameManager::hasGame()) {
+            return $this->fail();
         }
 
         return $next($request);
+    }
+
+    /**
+     * The request has failed.
+     *
+     * @throws \HauntPet\Auth\Exceptions\GameNotFoundException
+     */
+    protected function fail()
+    {
+        return redirect('/');
     }
 }

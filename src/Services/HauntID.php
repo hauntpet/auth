@@ -33,7 +33,6 @@ class HauntID
             return false;
         }
 
-
         $gameData = $response->json();
 
         // check the current website is for this game
