@@ -10,12 +10,12 @@ class GameManager
 
     public static function getGame(): ?array
     {
-        return session(GameManager::GAME_KEY);
+        return cache()->get(GameManager::GAME_KEY);
     }
 
     public static function hasGame(): bool
     {
-        return session()->has(GameManager::GAME_KEY);
+        return cache()->has(GameManager::GAME_KEY);
     }
 
     public static function setGameConfig(): void
@@ -29,6 +29,6 @@ class GameManager
 
     public static function setGame($data): void
     {
-        session([GameManager::GAME_KEY => $data]);
+        cache()->put(GameManager::GAME_KEY, $data);
     }
 }

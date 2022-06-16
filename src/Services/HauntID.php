@@ -76,9 +76,9 @@ class HauntID
      *
      * @return string|null
      */
-    private function getToken(): ?string
+    public function getToken(): ?string
     {
-        return session(HauntID::TOKEN_KEY);
+        return cache()->get(HauntID::TOKEN_KEY);
     }
 
     /**
@@ -87,8 +87,8 @@ class HauntID
      * @param string $token
      * @return void
      */
-    private function setToken(string $token): void
+    public function setToken(string $token): void
     {
-        session([HauntID::TOKEN_KEY => $token]);
+        cache()->put(HauntID::TOKEN_KEY, $token);
     }
 }
