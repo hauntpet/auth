@@ -1,0 +1,57 @@
+{
+    "name": "hauntpet/auth",
+    "authors": [
+        {
+            "name": "crotanite",
+            "email": "hello@paigejones.me"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^10.6"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.4",
+        "orchestra/testbench": "^8.3",
+        "laravel/pint": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "HauntPet\\Auth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Archwardens\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HauntPet\\Auth\\AuthServiceProvider"
+            ],
+            "aliases": {
+                "HauntID": "HauntPet\\Auth\\Facades\\HauntID"
+            }
+        }
+    },
+    "scripts": {
+        "pint": [
+            "pint"
+        ],
+        "test": [
+            "@putenv XDEBUG_MODE=develop",
+            "pest --bail"
+        ],
+        "test-coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "pest --coverage --coverage-clover=coverage.xml"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
