@@ -5,7 +5,7 @@ Adds authentication functionality with **HauntID** to an application.
 `composer require hauntpet/auth`
 
 ### Configuration
-Add your game to Haunt, this can be done on the [Games Page](http://haunt.test:4000/games/283400585537089). Once your game is approved you can generate a client id and client secret under the "Tokens" tab on the games page.
+Add your game to Haunt, this can be done on the [Games Page](https://haunt.pet/games/283400585537089). Once your game is approved you can generate a client id and client secret under the "Tokens" tab on the games page.
 ```env
 HAUNT_ID="client-id"
 HAUNT_SECRET="client-secret"
