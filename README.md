@@ -23,7 +23,7 @@ HauntIDDecoration::loginButton();
 ```
 
 ### Login
-Upon clicking to login with HauntID, you will need to send the user to be redirected to the Haunt application. This can be done easily with the HauntID package.
+Upon clicking to login with HauntID, you will need to send the user to be redirected to the Haunt application. This can be done easily with HauntID.
 
 ```html
 <a href="/haunt">
@@ -39,7 +39,7 @@ Route::get('/haunt', function () {
 ```
 
 ### Callback
-Once authorized, or denied, Haunt will send the user to the redirect url you have set (e.g. "https://your-site.com/haunt/callback"). You can then fetch the user from the Haunt application and update/create a user for your site.
+Once authorized, or denied, Haunt will send the user to the redirect url you have set (e.g. "/haunt/callback"). You can then fetch the user from the Haunt application and update/create a user for your site.
 
 ```php
 use HauntPet\Auth\Facades\HauntID;
